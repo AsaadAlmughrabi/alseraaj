@@ -15,7 +15,7 @@ async function getMessages(locale) {
 
 export default async function RootLayout(props) {
   const {children, params} = props;
-  const {locale} = await params; 
+  const {locale} = await params; / Next 15: await params/
 
   if (!routing.locales.includes(locale)) notFound();
   const messages = await getMessages(locale);
@@ -26,7 +26,7 @@ export default async function RootLayout(props) {
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Navbar />
           {children}
-          <Footer />
+          {/* <Footer /> */}
         </NextIntlClientProvider>
       </body>
     </html>
