@@ -1,5 +1,39 @@
 {
-  "home": { "hello": "Hello" },
-  "nav": { "services": "Services", "work": "Work", "process": "Process", "contact": "Contact" },
-  "footer": { "rights": "All rights reserved." }
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "gallery": "Gallery",
+    "contact": "Contact",
+    "about": "About",
+    "language": "Language",
+    "search": "Search..."
+  },
+  "services": {
+    "groups": {
+      "print-gifts": { "label": "Print & Gifts" },
+      "design-digital-marketing": { "label": "Design & Digital Marketing" }
+    },
+    "items": {
+      "digital-printing": { "label": "Digital printing", "desc": "Cards, brochures, flyers, posters, stickers, indoor signage." },
+      "signage-printing": { "label": "Signage printing", "desc": "Banners, roll-ups, shop signs, decals, wayfinding." },
+      "laser-cutting-engraving": { "label": "Laser cutting & engraving", "desc": "Cut/engrave acrylic, wood, metal; custom gifts." },
+      "acrylic-displays-stands": { "label": "Acrylic displays & stands", "desc": "Product displays, menu holders, custom acrylic." },
+      "billboards-cladding": { "label": "Billboards & cladding", "desc": "Outdoor billboards, building cladding, install." },
+      "heat-press-printing": { "label": "Heat-press printing", "desc": "T-shirts, mugs, caps, totes (sublimation/HTV)." },
+      "embroidery": { "label": "Embroidery", "desc": "Logos on apparel, caps, uniforms, patches." },
+      "graphic-design-video": { "label": "Graphic design & video", "desc": "Branding, print/digital design, motion/video ads." },
+      "websites": { "label": "Website design & development", "desc": "Responsive sites, CMS, e-commerce." },
+      "mobile-apps": { "label": "Mobile app development", "desc": "iOS/Android apps, PWAs, prototypes." },
+      "social-media-marketing": { "label": "Social media marketing", "desc": "Content, community, paid ads, analytics." }
+    }
+  },
+  "gallery": {
+    "items": {
+      "gallery-digital-printing": { "label": "Digital printing", "desc": "Cards, brochures, posters, stickers." },
+      "gallery-signage-printing": { "label": "Signage printing", "desc": "Banners, roll-ups, shop signs, decals." },
+      "gallery-laser-cut-engrave": { "label": "Laser cutting & engraving", "desc": "Acrylic, wood, metal; custom gifts." },
+      "gallery-billboards-cladding": { "label": "Billboards & cladding", "desc": "Outdoor billboards, building cladding." },
+      "gallery-gift-items": { "label": "Gift items", "desc": "Custom apparel, mugs, caps, corporate gifts." }
+    }
+  }
 }
