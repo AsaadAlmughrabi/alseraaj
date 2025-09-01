@@ -1,47 +1,50 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import {usePathname, useSearchParams} from 'next/navigation';
-import {useLocale, useTranslations} from 'next-intl';
-import {useEffect, useId, useMemo, useRef, useState} from 'react';
-import {createPortal} from 'react-dom';
+import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 const PANEL_WIDTH_BASE = 320;
 const LANGS = [
-  {code: 'en', flag: '🇬🇧', label: 'English'},
-  {code: 'ar', flag: '🇸🇦', label: 'العربية'}
+  { code: "en", label: "English" },
+  { code: "ar", label: "العربية" },
 ];
 
 export default function LanguageSwitcher() {
   const pathname = usePathname();
   const search = useSearchParams();
   const locale = useLocale();
-  const t = useTranslations('nav');
+  const t = useTranslations("nav");
 
   const [open, setOpen] = useState(false);
   const triggerRef = useRef(null);
   const panelRef = useRef(null);
-  const lastPtr = useRef('mouse'); // 'mouse' | 'touch' | 'pen'
+  const lastPtr = useRef("mouse"); // 'mouse' | 'touch' | 'pen'
   const closeTimer = useRef(null);
   const pid = useId();
 
-  const [pos, setPos] = useState({top: 0, left: 0, w: PANEL_WIDTH_BASE});
+  const [pos, setPos] = useState({ top: 0, left: 0, w: PANEL_WIDTH_BASE });
 
-  const queryStr = useMemo(() => search?.toString() ?? '', [search]);
+  const queryStr = useMemo(() => search?.toString() ?? "", [search]);
 
-  const cancelClose = () => { if (closeTimer.current) clearTimeout(closeTimer.current); };
+  const cancelClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+  };
   const scheduleClose = (ms = 120) => {
     // Only hover-close for mouse; never for touch/pen.
-    if (lastPtr.current !== 'mouse') return;
+    if (lastPtr.current !== "mouse") return;
     cancelClose();
     closeTimer.current = setTimeout(() => setOpen(false), ms);
   };
 
   // Build href for a given locale (preserves path + query)
   const buildHref = (nextLocale) => {
-    const segs = (pathname ? pathname.split('/') : ['']).filter(Boolean);
-    if (segs.length) segs[0] = nextLocale; else segs.push(nextLocale);
-    return '/' + segs.join('/') + (queryStr ? `?${queryStr}` : '');
+    const segs = (pathname ? pathname.split("/") : [""]).filter(Boolean);
+    if (segs.length) segs[0] = nextLocale;
+    else segs.push(nextLocale);
+    return "/" + segs.join("/") + (queryStr ? `?${queryStr}` : "");
   };
 
   // Position panel (responsive clamp)
@@ -53,28 +56,35 @@ export default function LanguageSwitcher() {
       const rect = btn.getBoundingClientRect();
       const vw = window.innerWidth;
       const w = Math.min(PANEL_WIDTH_BASE, Math.max(240, vw - 24));
-      const left = Math.min(Math.max(12, rect.left + rect.width / 2 - w / 2), vw - w - 12);
+      const left = Math.min(
+        Math.max(12, rect.left + rect.width / 2 - w / 2),
+        vw - w - 12
+      );
       const top = rect.bottom + 10;
-      setPos({top, left, w});
+      setPos({ top, left, w });
     };
     update();
-    window.addEventListener('resize', update);
-    window.addEventListener('scroll', update, {passive: true});
+    window.addEventListener("resize", update);
+    window.addEventListener("scroll", update, { passive: true });
     return () => {
-      window.removeEventListener('resize', update);
-      window.removeEventListener('scroll', update);
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update);
     };
   }, [open]);
 
   // ESC + close if another nav section opens
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };
-    const onOpen = (e) => { if (e.detail !== 'language') setOpen(false); };
-    window.addEventListener('keydown', onKey);
-    window.addEventListener('nav:open-section', onOpen);
+    const onKey = (e) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const onOpen = (e) => {
+      if (e.detail !== "language") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("nav:open-section", onOpen);
     return () => {
-      window.removeEventListener('keydown', onKey);
-      window.removeEventListener('nav:open-section', onOpen);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("nav:open-section", onOpen);
     };
   }, []);
 
@@ -82,87 +92,118 @@ export default function LanguageSwitcher() {
   useEffect(() => {
     const onDown = (e) => {
       const path = e.composedPath ? e.composedPath() : [];
-      if (!path.includes(triggerRef.current) && !path.includes(panelRef.current)) setOpen(false);
+      if (
+        !path.includes(triggerRef.current) &&
+        !path.includes(panelRef.current)
+      )
+        setOpen(false);
     };
-    document.addEventListener('mousedown', onDown);
-    document.addEventListener('touchstart', onDown, {passive: true});
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("touchstart", onDown, { passive: true });
     return () => {
-      document.removeEventListener('mousedown', onDown);
-      document.removeEventListener('touchstart', onDown);
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("touchstart", onDown);
     };
   }, []);
 
   const NAV_LINK =
-    'rounded-md px-3 py-2 text-sm font-medium text-white hover:text-white ' +
-    'focus:outline-none focus:ring-2 focus:ring-[#FFCC00] ' +
-    'bg-[linear-gradient(90deg,#EB5B00,#FFCC00)] [background-size:0%_2px] [background-repeat:no-repeat] ' +
-    '[background-position:left_100%] hover:[background-size:100%_2px] transition-[background-size]';
+    "rounded-md px-3 py-2 text-sm font-medium text-white hover:text-white " +
+    "focus:outline-none focus:ring-2 focus:ring-[#FFCC00] " +
+    "bg-[linear-gradient(90deg,#EB5B00,#FFCC00)] [background-size:0%_2px] [background-repeat:no-repeat] " +
+    "[background-position:left_100%] hover:[background-size:100%_2px] transition-[background-size]";
 
-  const panelNode = open && createPortal(
-    <div
-      className="fixed inset-0 z-[60] pointer-events-none"
-      onPointerEnter={(e) => { lastPtr.current = e.pointerType || 'mouse'; cancelClose(); }}
-      onPointerLeave={() => scheduleClose(120)}
-    >
+  const panelNode =
+    open &&
+    createPortal(
       <div
-        ref={panelRef}
-        id={`lang-panel-${pid}`}
-        role="menu"
-        aria-label={t('language')}
-        className="pointer-events-auto rounded-xl border border-white/10 bg-[color:rgb(18_18_25_/95%)] backdrop-blur-xl shadow-2xl text-white"
-        style={{position: 'fixed', top: `${pos.top}px`, left: `${pos.left}px`, width: `${pos.w}px`}}
+        className="fixed inset-0 z-[60] pointer-events-none"
+        onPointerEnter={(e) => {
+          lastPtr.current = e.pointerType || "mouse";
+          cancelClose();
+        }}
+        onPointerLeave={() => scheduleClose(120)}
       >
-        <div className="px-4 py-3 border-b border-white/10 text-xs tracking-wide">
-          {t('language')}
-        </div>
+        <div
+          ref={panelRef}
+          id={`lang-panel-${pid}`}
+          role="menu"
+          aria-label={t("language")}
+          className="pointer-events-auto rounded-xl border border-white/10 bg-[color:rgb(18_18_25_/95%)] backdrop-blur-xl shadow-2xl text-white"
+          style={{
+            position: "fixed",
+            top: `${pos.top}px`,
+            left: `${pos.left}px`,
+            width: `${pos.w}px`,
+          }}
+        >
+          <div className="px-4 py-3 border-b border-white/10 text-xs tracking-wide">
+            {t("language")}
+          </div>
 
-        {/* multi-column; 1 col on phones, 2+ when wide */}
-        <div className="p-3 [column-width:13rem] sm:[column-width:14rem] [column-gap:12px] [column-fill:balance]">
-          {LANGS.map(({code, flag, label}) => {
-            const active = locale === code;
-            const href = buildHref(code);
-            return (
-              <div key={code} className="mb-2 break-inside-avoid">
-                <Link
-                  href={href}
-                  replace
-                  scroll={false}
-                  prefetch
-                  role="menuitemradio"
-                  aria-checked={active ? 'true' : 'false'}
-                  className={`w-full rounded-xl px-4 py-3 flex items-center justify-between hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#FFCC00] ${active ? 'bg-white/10' : ''} text-white`}
-                  onClick={() => setOpen(false)}
-                >
-                  <span className="flex items-center gap-2">
-                    <span aria-hidden className="text-base">{flag}</span>
-                    <span className="text-sm">{label}</span>
-                    <span className="text-xs ltr:ml-2 rtl:mr-2 opacity-80">({code.toUpperCase()})</span>
-                  </span>
-                  {active && (
-                    <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" className="text-white">
-                      <path d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" fill="currentColor"/>
-                    </svg>
-                  )}
-                </Link>
-              </div>
-            );
-          })}
+          {/* multi-column; 1 col on phones, 2+ when wide */}
+          <div className="p-3 [column-width:13rem] sm:[column-width:14rem] [column-gap:12px] [column-fill:balance]">
+            {LANGS.map(({ code, flag, label }) => {
+              const active = locale === code;
+              const href = buildHref(code);
+              return (
+                <div key={code} className="mb-2 break-inside-avoid">
+                  <Link
+                    href={href}
+                    replace
+                    scroll={false}
+                    prefetch
+                    role="menuitemradio"
+                    aria-checked={active ? "true" : "false"}
+                    className={`w-full rounded-xl px-4 py-3 flex items-center justify-between hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#FFCC00] ${
+                      active ? "bg-white/10" : ""
+                    } text-white`}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span aria-hidden className="text-base">
+                        {flag}
+                      </span>
+                      <span className="text-sm">{label}</span>
+                      <span className="text-xs ltr:ml-2 rtl:mr-2 opacity-80">
+                        ({code.toUpperCase()})
+                      </span>
+                    </span>
+                    {active && (
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 20 20"
+                        aria-hidden="true"
+                        className="text-white"
+                      >
+                        <path
+                          d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    )}
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </div>,
-    document.body
-  );
+      </div>,
+      document.body
+    );
 
   return (
     <div
       ref={triggerRef}
       className="inline-block"
       onPointerEnter={(e) => {
-        lastPtr.current = e.pointerType || 'mouse';
-        if (lastPtr.current === 'mouse') {
+        lastPtr.current = e.pointerType || "mouse";
+        if (lastPtr.current === "mouse") {
           cancelClose();
           setOpen(true);
-          window.dispatchEvent(new CustomEvent('nav:open-section', {detail: 'language'}));
+          window.dispatchEvent(
+            new CustomEvent("nav:open-section", { detail: "language" })
+          );
         }
       }}
       onPointerLeave={() => scheduleClose(120)}
@@ -170,31 +211,53 @@ export default function LanguageSwitcher() {
       <button
         type="button"
         aria-haspopup="menu"
-        aria-expanded={open ? 'true' : 'false'}
+        aria-expanded={open ? "true" : "false"}
         aria-controls={`lang-panel-${pid}`}
-        className={[NAV_LINK, 'flex items-center gap-2'].join(' ')}
-        title={t('language')}
-        onPointerDown={(e) => { lastPtr.current = e.pointerType || 'mouse'; }}
+        className={[NAV_LINK, "flex items-center gap-2"].join(" ")}
+        title={t("language")}
+        onPointerDown={(e) => {
+          lastPtr.current = e.pointerType || "mouse";
+        }}
         onClick={() => {
           // On touch/pen, toggle via tap
-          if (lastPtr.current !== 'mouse') {
-            setOpen(v => !v);
-            window.dispatchEvent(new CustomEvent('nav:open-section', {detail: 'language'}));
+          if (lastPtr.current !== "mouse") {
+            setOpen((v) => !v);
+            window.dispatchEvent(
+              new CustomEvent("nav:open-section", { detail: "language" })
+            );
           }
         }}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            setOpen(v => !v);
-            window.dispatchEvent(new CustomEvent('nav:open-section', {detail: 'language'}));
-          } else if (e.key === 'Escape') setOpen(false);
-          else if (e.key === 'ArrowDown') setOpen(true);
+            setOpen((v) => !v);
+            window.dispatchEvent(
+              new CustomEvent("nav:open-section", { detail: "language" })
+            );
+          } else if (e.key === "Escape") setOpen(false);
+          else if (e.key === "ArrowDown") setOpen(true);
         }}
       >
-        <span aria-hidden className="text-base">{locale === 'ar' ? '🇸🇦' : '🇬🇧'}</span>
-        <span className="uppercase text-white">{locale}</span>
-        <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" className={`transition-transform duration-200 ${open ? 'rotate-180' : ''} text-white`}>
-          <path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <span aria-hidden className="text-base">
+          {locale === "ar"}
+        </span>
+        <span className="uppercase text-black">{locale}</span>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 20 20"
+          aria-hidden="true"
+          className={`transition-transform duration-200 ${
+            open ? "rotate-180" : ""
+          } text-white`}
+        >
+          <path
+            d="M5 8l5 5 5-5"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </button>
 

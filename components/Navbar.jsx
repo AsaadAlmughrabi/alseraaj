@@ -189,15 +189,16 @@ export default function Navbar() {
 
   const maxH = 'max-h-[2000px]';
 
-  const navLink = useMemo(
-    () =>
-      cx(
-        'rounded-md px-3 py-2 text-sm font-medium text-white/90 hover:text-white',
-        'focus:outline-none focus:ring-2 focus:ring-[#FFCC00]',
-        'bg-[linear-gradient(90deg,#EB5B00,#FFCC00)] [background-size:0%_2px] [background-repeat:no-repeat] [background-position:left_100%] hover:[background-size:100%_2px] transition-[background-size]'
-      ),
-    []
-  );
+const navLink = useMemo(
+  () =>
+    cx(
+      'rounded-md px-3 py-2 text-sm font-medium text-black/80 hover:text-black',
+      'focus:outline-none focus:ring-2 focus:ring-[#EB5B00]',
+      'bg-[linear-gradient(90deg,#EB5B00,#FFCC00)] [background-size:0%_2px] [background-repeat:no-repeat] [background-position:left_100%] hover:[background-size:100%_2px] transition-[background-size]'
+    ),
+  []
+);
+
 
   // Announce opening to close other panels (like LanguageSwitcher)
   const announceOpen = (section) =>
@@ -315,7 +316,7 @@ export default function Navbar() {
               width={46}
               height={46}
               priority
-              className="h-20 w-20"
+              className="h-15 w-15"
             />
           </Link>
         </div>
@@ -327,7 +328,7 @@ export default function Navbar() {
               <Link
                 role="menuitem"
                 href={root}
-                className={cx(navLink, isActive(root) && 'text-white')}
+                className={cx(navLink, isActive(root) && 'text-black')}
               >
                 {tNav('home')}
               </Link>
@@ -524,14 +525,15 @@ export default function Navbar() {
   /* --------------------------------- render --------------------------------- */
   return (
     <header
-      ref={headerRef}
-      className={cx(
-        'border-b border-white/10 backdrop-blur-md',
-        scrolled
-          ? 'bg-[color:rgb(15_15_20_/55%)] shadow-[inset_0_-1px_0_rgba(255,255,255,.06)]'
-          : 'bg-[color:rgb(15_15_20_/75%)]'
-      )}
-    >
+  ref={headerRef}
+  className={cx(
+    'border-b border-black/10 backdrop-blur-md',
+    scrolled
+      ? 'bg-white/80 shadow-[inset_0_-1px_0_rgba(0,0,0,.06)]'
+      : 'bg-white/95'
+  )}
+>
+
       <DesktopTopRow />
 
       {/* Floating (overlay) panels for desktop */}
