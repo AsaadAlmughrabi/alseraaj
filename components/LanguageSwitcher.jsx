@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-const PANEL_WIDTH_BASE = 320;
+const PANEL_WIDTH_BASE = 150;
 const LANGS = [
   { code: "en", label: "English" },
   { code: "ar", label: "العربية" },
@@ -128,7 +128,7 @@ export default function LanguageSwitcher() {
           id={`lang-panel-${pid}`}
           role="menu"
           aria-label={t("language")}
-          className="pointer-events-auto rounded-xl border border-white/10 bg-[color:rgb(18_18_25_/95%)] backdrop-blur-xl shadow-2xl text-white"
+          className="pointer-events-auto rounded-xl border border-gray-200 bg-white shadow-xl text-gray-900"
           style={{
             position: "fixed",
             top: `${pos.top}px`,
@@ -136,7 +136,7 @@ export default function LanguageSwitcher() {
             width: `${pos.w}px`,
           }}
         >
-          <div className="px-4 py-3 border-b border-white/10 text-xs tracking-wide">
+          <div className="px-4 py-3 border-b border-gray-200 text-xs font-semibold tracking-wide text-gray-600">
             {t("language")}
           </div>
 
@@ -154,9 +154,9 @@ export default function LanguageSwitcher() {
                     prefetch
                     role="menuitemradio"
                     aria-checked={active ? "true" : "false"}
-                    className={`w-full rounded-xl px-4 py-3 flex items-center justify-between hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#FFCC00] ${
-                      active ? "bg-white/10" : ""
-                    } text-white`}
+                    className={`w-full rounded-xl px-4 py-3 flex items-center justify-between hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFCC00] ${
+                      active ? "bg-gray-100 font-medium" : ""
+                    } text-gray-900`}
                     onClick={() => setOpen(false)}
                   >
                     <span className="flex items-center gap-2">
@@ -174,7 +174,7 @@ export default function LanguageSwitcher() {
                         height="18"
                         viewBox="0 0 20 20"
                         aria-hidden="true"
-                        className="text-white"
+                        className="text-grey-600"
                       >
                         <path
                           d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z"
@@ -213,7 +213,9 @@ export default function LanguageSwitcher() {
         aria-haspopup="menu"
         aria-expanded={open ? "true" : "false"}
         aria-controls={`lang-panel-${pid}`}
-        className={[NAV_LINK, "flex items-center gap-2"].join(" ")}
+        className={
+          "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFCC00]"
+        }
         title={t("language")}
         onPointerDown={(e) => {
           lastPtr.current = e.pointerType || "mouse";
@@ -241,15 +243,15 @@ export default function LanguageSwitcher() {
         <span aria-hidden className="text-base">
           {locale === "ar"}
         </span>
-        <span className="uppercase text-black">{locale}</span>
+        <span className="uppercase text-gray-900">{locale}</span>
         <svg
-          width="16"
-          height="16"
+          width="10"
+          height="10"
           viewBox="0 0 20 20"
           aria-hidden="true"
           className={`transition-transform duration-200 ${
             open ? "rotate-180" : ""
-          } text-white`}
+          } text-gray-900`}
         >
           <path
             d="M5 8l5 5 5-5"
