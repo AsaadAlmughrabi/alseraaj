@@ -334,7 +334,7 @@ export default function Navbar() {
 
   const DesktopTopRow = () => (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="flex items-center justify-between py-3">
+      <div className="flex items-center justify-between h-14">
         {/* Logo */}
         <div className="flex items-center">
           <Link
@@ -348,7 +348,7 @@ export default function Navbar() {
               width={46}
               height={46}
               priority
-              className="h-15 w-15"
+              className="h-10 w-auto"
             />
           </Link>
         </div>
