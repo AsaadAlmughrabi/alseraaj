@@ -4,6 +4,7 @@ import {notFound} from "next/navigation";
 import {routing} from "@/i18n/routing";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import HeroSection from "@/components/HeroSection";
 
 async function getMessages(locale) {
   try {
@@ -25,6 +26,7 @@ export default async function RootLayout(props) {
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Navbar />
+          <HeroSection />
           {children}
           {/* <Footer /> */}
         </NextIntlClientProvider>

@@ -203,8 +203,8 @@ export default function Navbar() {
   const navLink = useMemo(
     () =>
       cx(
-        "rounded-md px-3 py-2 text-sm font-medium text-black/80 hover:text-black",
-        "focus:outline-none focus:ring-2 focus:ring-[#EB5B00]",
+        "rounded-md px-3 py-2 text-sm font-medium text-white hover:text-yellow-300",
+        "focus:outline-none focus:ring-2 focus:ring-[#FFCC00]",
         "bg-[linear-gradient(90deg,#EB5B00,#FFCC00)] [background-size:0%_2px] [background-repeat:no-repeat] [background-position:left_100%] hover:[background-size:100%_2px] transition-[background-size]"
       ),
     []
@@ -578,11 +578,12 @@ export default function Navbar() {
     <header
       ref={headerRef}
       className={cx(
-        "border-b border-black/10 backdrop-blur-md",
+        "border-b border-black/10 backdrop-blur-md fixed top-0 left-0 w-full z-50 text-white",
         scrolled
-          ? "bg-white/80 shadow-[inset_0_-1px_0_rgba(0,0,0,.06)]"
-          : "bg-white/95"
+          ? "bg-black/40 shadow-[inset_0_-1px_0_rgba(0,0,0,.06)]"
+          : "bg-black/20"
       )}
+      style={{background: 'rgba(0,0,0,0.2)'}}
     >
       <DesktopTopRow />
 
