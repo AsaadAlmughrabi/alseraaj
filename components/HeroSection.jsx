@@ -60,7 +60,7 @@ export default function HeroSection() {
               </span>
               <span className="block overflow-hidden">
                 <span 
-                  className={`inline-block transition-transform duration-1000 delay-600 ${
+                  className={`inline-block  mt-3 transition-transform duration-1000 delay-600 ${
                     isLoaded ? 'translate-y-0' : 'translate-y-full'
                   }`}
                 >
