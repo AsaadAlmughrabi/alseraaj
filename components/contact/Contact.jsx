@@ -6,18 +6,20 @@ import styles from './Contact.module.css';
 import {useTranslations} from 'next-intl';
 import LeafletMap from '@/components/LeafletMap';
 
-const TO_EMAIL = 'Sign@alseraaj.com';
+const TO_EMAIL = 'Print@alseraaj.com';
+const EMAIL2 = 'Sign@alseraaj.com';
+const PHONE_DISPLAY1 = '+966 508 640 420';
+const PHONE_DISPLAY2 = '+966 138 276 778';
 const ADDRESS_TEXT = '7293 18th Street, Al Adamah, 3507, Dammam 32242, Saudi Arabia';
-const DIRECTIONS_URL = 'https://www.google.com/maps/place/%D9%85%D8%B7%D8%A8%D8%B9%D8%A9+%D8%A7%D9%84%D8%B3%D8%B1%D8%A7%D8%AC+%D9%84%D9%84%D8%AF%D8%B9%D8%A7%D9%8A%D8%A9+%D9%88%D8%A7%D9%84%D8%A5%D8%B9%D9%84%D8%A7%D9%86Seraaj+Adv.%E2%80%AD/@26.4331746,50.0783317,14.58z/data=!4m16!1m9!3m8!1s0x3e49fc80c46908cb:0x2b86f48c9fdfc8b2!2z2YXYt9io2LnYqSDYp9mE2LPYsdin2Kwg2YTZhNiv2LnYp9mK2Kkg2YjYp9mE2KXYudmE2KfZhlNlcmFhaiBBZHYu!8m2!3d26.4307984!4d50.0967352!9m1!1b1!16s%2Fg%2F11bz5kjnxz!3m5!1s0x3e49fc80c46908cb:0x2b86f48c9fdfc8b2!8m2!3d26.4307984!4d50.0967352!16s%2Fg%2F11bz5kjnxz?entry=ttu&g_ep=EgoyMDI1MDkxNy4wIKXMDSoASAFQAw%3D%3D';
+const DIRECTIONS_URL =
+  'https://www.google.com/maps/place/%D9%85%D8%B7%D8%A8%D8%B9%D8%A9+%D8%A7%D9%84%D8%B3%D8%B1%D8%A7%D8%AC+%D9%84%D9%84%D8%AF%D8%B9%D8%A7%D9%8A%D8%A9+%D9%88%D8%A7%D9%84%D8%A5%D8%B9%D9%84%D8%A7%D9%86Seraaj+Adv.%E2%80%AD/@26.4331746,50.0783317,14.58z/data=!4m16!1m9!3m8!1s0x3e49fc80c46908cb:0x2b86f48c9fdfc8b2!2z2YXYt9io2LnYqSDYp9mE2LPYsdin2Kwg2YTZhNiv2LnYp9mK2Kkg2YjYp9mE2KXYudmE2KfZhlNlcmFhaiBBZHYu!8m2!3d26.4307984!4d50.0967352!9m1!1b1!16s%2Fg%2F11bz5kjnxz!3m5!1s0x3e49fc80c46908cb:0x2b86f48c9fdfc8b2!8m2!3d26.4307984!4d50.0967352!16s%2Fg%2F11bz5kjnxz?entry=ttu';
 const LAT = 26.4307984;
 const LNG = 50.0967352;
 
 export default function Contact() {
   const t = useTranslations('contact');
 
-  const [form, setForm] = useState({
-    name: '', email: '', company: '', subject: '', message: '',
-  });
+  const [form, setForm] = useState({ name:'', email:'', company:'', subject:'', message:'' });
   const [loading, setLoading] = useState(false);
 
   const update = (k, v) => setForm((f) => ({...f, [k]: v}));
@@ -68,10 +70,13 @@ export default function Contact() {
                   required
                 />
               </label>
+
               <label className={styles.label}>
                 {t('form.email')}
                 <input
-                  className={styles.input}
+                  className={`${styles.input} ${styles.ltr}`}
+                  dir="ltr"
+                  inputMode="email"
                   type="email"
                   placeholder={t('form.email_ph')}
                   value={form.email}
@@ -92,6 +97,7 @@ export default function Contact() {
                   onChange={(e)=>update('company', e.target.value)}
                 />
               </label>
+
               <label className={styles.label}>
                 {t('form.subject')}
                 <input
@@ -125,8 +131,13 @@ export default function Contact() {
           <div className={styles.card}>
             <h3 className={styles.sideTitle}>{t('direct.title')}</h3>
             <ul className={styles.contactList} aria-label={t('direct.aria')}>
-              <li><span className={styles.contactIcon}>📞</span><span>+966 138 276 778</span></li>
-              <li><span className={styles.contactIcon}>✉️</span><span>{TO_EMAIL}</span></li>
+                              <li><span className={styles.contactIcon}>📞</span><span className={styles.ltr}>{PHONE_DISPLAY1}</span></li>
+
+              <li><span className={styles.contactIcon}>📞</span><span className={styles.ltr}>{PHONE_DISPLAY2}</span></li>
+              <li><span className={styles.contactIcon}>✉️</span><span className={styles.ltr}>{TO_EMAIL}</span></li>
+                            <li><span className={styles.contactIcon}>✉️</span><span className={styles.ltr}>{EMAIL2}</span></li>
+
+              
             </ul>
           </div>
 
@@ -140,11 +151,13 @@ export default function Contact() {
             />
             <div className={styles.mapCard}>
               <strong className={styles.mapTitle}>{t('map.title')}</strong>
-              <p className={styles.mapAddr}>{ADDRESS_TEXT}</p>
-              <a className={styles.mapBtn} href={DIRECTIONS_URL} target="_blank" rel="noopener noreferrer">
+              <p className={styles.mapAddr}>
+                <span className={styles.ltr}>7293 18th Street</span>, Al Adamah, 3507, Dammam 32242, Saudi Arabia
+              </p>
+              <a className={`${styles.mapBtn} ${styles.btnLtr}`} href={DIRECTIONS_URL} target="_blank" rel="noopener noreferrer">
                 {t('map.cta')} →
               </a>
-              <div style={{marginTop:8, fontSize:12, color:'#374151'}}>
+              <div className={styles.ltr} style={{marginTop:8, fontSize:12, color:'#374151'}}>
                 {LAT.toFixed(6)}, {LNG.toFixed(6)}
               </div>
             </div>

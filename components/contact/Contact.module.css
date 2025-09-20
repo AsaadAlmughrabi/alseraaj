@@ -1,56 +1,59 @@
+/* alseraaj/components/contact/Contact.module.css */
 :root {
+    --border: #e5e7eb;
+    --gap: 100px;
+    --header-h: 88px;
+    --radius: 12px;
+    --radius-sm: 12px;
+    --shadow: 0 6px 18px rgba(17, 24, 39, .06);
+    --surface: #fff;
     --brand-900: #640D5F;
     --brand-700: #B12C00;
     --brand-600: #EB5B00;
     --brand-400: #FFCC00;
-    --surface: #fff;
-    --border: #e5e7eb;
     --text-900: #111827;
     --text-700: #374151;
     --text-500: #5d6775;
-    --radius: 12px;
-    --radius-sm: 12px;
-    --shadow: 0 6px 18px rgba(17, 24, 39, .06);
-    --gap: 100px;
 }
 
 .page {
-    padding-top: 80px;  
+    box-sizing: border-box;
     min-height: 100vh;
-    box-sizing: border-box; /* Include padding in height calculation */
+    padding-top: 80px;
 }
 
 .header {
+    margin: 0 auto;
     max-width: 1120px;
-    margin: 0 auto 72px auto;
 }
 
 .title {
+    color: #271211;
     font-size: 64px;
+    font-weight: 700;
     line-height: 1.1;
     margin: 0 0 12px 0;
-    color: #271211;
-    font-weight: 700;
 }
 
 .subtitle {
     color: var(--text-500);
-    max-width: 760px;
     font-size: 18px;
+    max-width: 760px;
 }
 
 .grid {
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
     gap: 32px;
+    margin: 0 auto;
     max-width: 1120px;
-    margin: 0 auto 72px auto;
 }
 
 @media (min-width:960px) {
     .grid {
-        flex-direction: row;
         align-items: flex-start;
+        flex-direction: row;
         gap: var(--gap);
     }
 
@@ -59,7 +62,9 @@
     }
 
     .sidebar {
+        display: flex;
         flex: 0 0 440px;
+        flex-direction: column;
         max-width: 440px;
     }
 }
@@ -68,15 +73,15 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 28px;
     box-shadow: var(--shadow);
+    padding: 28px;
 }
 
 .cardTitle {
-    font-size: 22px;
-    margin: 0 0 40px 0;
     color: var(--text-900);
+    font-size: 22px;
     font-weight: 800;
+    margin: 0 0 40px 0;
 }
 
 .form {
@@ -87,37 +92,37 @@
 
 .fieldRow {
     display: grid;
-    grid-template-columns: 1fr;
     gap: 16px;
+    grid-template-columns: 1fr;
 }
 
 @media (min-width:720px) {
     .fieldRow {
-        grid-template-columns: 1fr 1fr;
         gap: 18px;
+        grid-template-columns: 1fr 1fr;
     }
 }
 
 .label {
+    color: var(--text-700);
     display: flex;
     flex-direction: column;
-    gap: 8px;
     font-size: 16px;
-    color: var(--text-700);
     font-weight: 600;
+    gap: 8px;
 }
 
 .input {
-    width: 100%;
+    background: #fff;
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 16px 18px;
     font-size: 16px;
     line-height: 1.4;
     min-height: 56px;
     outline: none;
-    background: #fff;
+    padding: 16px 18px;
     transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    width: 100%;
 }
 
 .input::placeholder {
@@ -131,21 +136,21 @@
 }
 
 .textarea {
-    resize: vertical;
     min-height: 200px;
     padding: 16px 18px;
+    resize: vertical;
 }
 
 .button {
-    margin-top: 6px;
+    background: linear-gradient(180deg, var(--brand-900), #4d0a49);
     border: 0;
     border-radius: 14px;
-    padding: 18px 22px;
+    color: #fff;
+    cursor: pointer;
     font-size: 17px;
     font-weight: 800;
-    cursor: pointer;
-    color: #fff;
-    background: linear-gradient(180deg, var(--brand-900), #4d0a49);
+    margin-top: 6px;
+    padding: 18px 22px;
     transition: filter .15s ease, transform .02s ease;
 }
 
@@ -161,24 +166,25 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-height: 0;
 }
 
 .sideTitle {
-    margin-bottom: 10px;
-    font-weight: 700;
-    font-size: 20px;
     color: #374151;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
 .contactList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    color: var(--text-700);
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    color: var(--text-700);
     font-size: 16px;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .contactIcon {
@@ -186,58 +192,71 @@
 }
 
 .mapShell {
-    position: relative;
-    height: clamp(320px, 48vh, 560px);
     background: #f3f4f6;
     border: 1px solid var(--border);
     border-radius: 20px;
-    overflow: hidden;
     box-shadow: var(--shadow);
+    flex: 1 1 auto;
+    height: clamp(320px, 48vh, 560px);
+    overflow: hidden;
+    position: relative;
 }
 
 .mapInner {
-    position: absolute;
     inset: 0;
+    position: absolute;
     z-index: 1;
 }
 
 .mapCard {
-    position: absolute;
-    left: 16px;
-    bottom: 16px;
     background: #fff;
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 14px 16px;
-    max-width: min(460px, calc(100% - 32px));
+    bottom: 16px;
     box-shadow: var(--shadow);
-    z-index: 2000;
+    left: 16px;
+    max-width: min(460px, calc(100% - 32px));
+    padding: 14px 16px;
     pointer-events: auto;
+    position: absolute;
+    z-index: 2000;
 }
 
 .mapTitle {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 800;
     color: var(--text-900);
+    display: block;
     font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 6px;
 }
 
 .mapAddr {
-    margin: 0 0 10px 0;
     color: var(--text-700);
     font-size: 15px;
+    margin: 0 0 10px 0;
 }
 
 .mapBtn {
-    display: inline-block;
-    text-decoration: none;
     background: var(--brand-600);
+    border-radius: 12px;
     color: #111827;
+    display: inline-block;
+    font-size: 15px;
     font-weight: 800;
     padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 15px;
+    text-decoration: none;
+}
+
+/* LTR helpers for numbers/emails/URLs inside RTL pages */
+.ltr {
+    direction: ltr;
+    text-align: left;
+    unicode-bidi: plaintext;
+}
+
+.btnLtr {
+    direction: ltr;
+    unicode-bidi: plaintext;
 }
 
 @media (max-width:400px) {
