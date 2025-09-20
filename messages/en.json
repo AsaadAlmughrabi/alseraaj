@@ -35,5 +35,37 @@
       "gallery-billboards-cladding": { "label": "Billboards & cladding", "desc": "Outdoor billboards, building cladding." },
       "gallery-gift-items": { "label": "Gift items", "desc": "Custom apparel, mugs, caps, corporate gifts." }
     }
+  },
+  "contact": {
+    "breadcrumb": "Contact us",
+    "title": "Get in Touch with Our Team",
+    "subtitle": "We’re here to answer questions, discuss your project, and help you find the best solutions.",
+    "form": {
+      "title": "Let’s Talk About Your Project",
+      "aria": "Contact form",
+      "name": "Name",
+      "name_ph": "Your full name",
+      "email": "Email Address",
+      "email_ph": "We’ll get back to you here",
+      "company": "Company Name",
+      "company_ph": "Who you represent",
+      "subject": "Subject",
+      "subject_ph": "What’s this about?",
+      "message": "Message",
+      "message_ph": "Tell us how we can help",
+      "cta": "Send Message",
+      "toast": "Form submitted (demo only)."
+    },
+    "direct": {
+      "title": "Prefer a Direct Approach?",
+      "aria": "Direct contact information",
+      "hours": "Monday to Friday, 9 AM – 6 PM (GMT)"
+    },
+    "map": {
+      "aria": "Map preview and office address",
+      "title": "Visit Our Office",
+      "cta": "Get a Direction"
+    }
   }
-}
+
+  }

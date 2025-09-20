@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
 
 /* Brand tokens */
 @theme {
@@ -34,7 +36,7 @@
 html, body {
 background:     #ffffff;
 color: #e6e6e9;
-overflow-y: hidden;
+/* overflow-y: hidden; */
 }
 
 

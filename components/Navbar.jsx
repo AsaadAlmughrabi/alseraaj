@@ -1,9 +1,8 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
+import Image from 'next/image';
+import {useLocale, useTranslations} from 'next-intl';
+import {Link, usePathname, useRouter} from '@/i18n/routing';
 import {
   useCallback,
   useEffect,
@@ -11,15 +10,15 @@ import {
   useRef,
   useState,
   useId,
-} from "react";
-import { createPortal } from "react-dom";
-import LanguageSwitcher from "./LanguageSwitcher";
-import useScrollTransparency from "../hooks/useScrollTransparency";
-import { servicesStructure, galleryKeys } from "../lib/menuData";
+} from 'react';
+import {createPortal} from 'react-dom';
+import LanguageSwitcher from './LanguageSwitcher';
+import useScrollTransparency from '../hooks/useScrollTransparency';
+import {servicesStructure, galleryKeys} from '../lib/menuData';
 
 /* ---------------------------------- utils --------------------------------- */
 function cx(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 function useOutsideClick(ref, handler) {
@@ -28,23 +27,23 @@ function useOutsideClick(ref, handler) {
       if (!ref.current) return;
       if (!ref.current.contains(e.target)) handler?.(e);
     }
-    document.addEventListener("mousedown", onDocClick);
-    document.addEventListener("touchstart", onDocClick, { passive: true });
+    document.addEventListener('mousedown', onDocClick);
+    document.addEventListener('touchstart', onDocClick, {passive: true});
     return () => {
-      document.removeEventListener("mousedown", onDocClick);
-      document.removeEventListener("touchstart", onDocClick);
+      document.removeEventListener('mousedown', onDocClick);
+      document.removeEventListener('touchstart', onDocClick);
     };
   }, [ref, handler]);
 }
 
-const Chevron = ({ open }) => (
+const Chevron = ({open}) => (
   <svg
     width="16"
     height="16"
     viewBox="0 0 20 20"
     className={cx(
-      "inline-block ltr:ml-1 rtl:mr-1 transition-transform duration-200",
-      open && "rotate-180"
+      'inline-block ltr:ml-1 rtl:mr-1 transition-transform duration-200',
+      open && 'rotate-180'
     )}
     aria-hidden="true"
   >
@@ -59,15 +58,9 @@ const Chevron = ({ open }) => (
 );
 
 /* -------------------------- floating panel wrapper ------------------------- */
-function FloatingPanel({
-  anchorRef,
-  open,
-  onRequestClose,
-  children,
-  width = 760,
-}) {
+function FloatingPanel({anchorRef, open, onRequestClose, children, width = 760}) {
   const panelRef = useRef(null);
-  const [pos, setPos] = useState({ top: 0, left: 0 });
+  const [pos, setPos] = useState({top: 0, left: 0});
   const closeTimer = useRef(null);
 
   const clear = () => {
@@ -90,20 +83,20 @@ function FloatingPanel({
         vw - width - 12
       );
       const top = rect.bottom + 10;
-      setPos({ top, left });
+      setPos({top, left});
     };
     if (open) {
       update();
-      window.addEventListener("resize", update);
-      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener('resize', update);
+      window.addEventListener('scroll', update, {passive: true});
       return () => {
-        window.removeEventListener("resize", update);
-        window.removeEventListener("scroll", update);
+        window.removeEventListener('resize', update);
+        window.removeEventListener('scroll', update);
       };
     }
   }, [open, anchorRef, width]);
 
-  // Close when clicking outside the panel (not the whole header)
+  // Close when clicking outside the panel
   useOutsideClick(panelRef, () => onRequestClose?.());
 
   if (!open) return null;
@@ -113,17 +106,16 @@ function FloatingPanel({
       role="dialog"
       aria-modal="false"
       className="fixed inset-0 z-[60] pointer-events-none"
-      // allow hover from trigger -> panel without flicker; close only for mouse
       onPointerEnter={clear}
       onPointerLeave={(e) => {
-        if ((e.pointerType || "mouse") === "mouse") scheduleClose();
+        if ((e.pointerType || 'mouse') === 'mouse') scheduleClose();
       }}
     >
       <div
         ref={panelRef}
         className="pointer-events-auto rounded-xl border border-black/10 bg-white shadow-xl"
         style={{
-          position: "fixed",
+          position: 'fixed',
           top: `${pos.top}px`,
           left: `${pos.left}px`,
           width: `${width}px`,
@@ -138,16 +130,15 @@ function FloatingPanel({
 
 /* ------------------------------ main component ----------------------------- */
 export default function Navbar() {
-  const tNav = useTranslations("nav");
-  const tServices = useTranslations("services");
-  const tGallery = useTranslations("gallery");
+  const tNav = useTranslations('nav');
+  const tServices = useTranslations('services');
+  const tGallery = useTranslations('gallery');
   const locale = useLocale();
   const pathname = usePathname();
+  const router = useRouter();
   const scrolled = useScrollTransparency(16);
 
-  const root = `/${locale}`;
   const uid = useId();
-
   const ids = useMemo(
     () => ({
       servicesPanel: `services-panel-${uid}`,
@@ -181,31 +172,32 @@ export default function Navbar() {
   // ESC closes everything
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         setOpenSection(null);
         setMobileOpen(false);
         setMobileServicesOpen(false);
         setMobileGalleryOpen(false);
       }
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, []);
 
   const isActive = useCallback(
     (href) =>
-      !!pathname && (pathname === href || pathname.startsWith(href + "/")),
-    [pathname]
+      !!pathname &&
+      (pathname === `/${locale}${href}` ||
+        pathname.startsWith(`/${locale}${href}/`)),
+    [pathname, locale]
   );
 
-  const maxH = "max-h-[2000px]";
-
+  const maxH = 'max-h-[2000px]';
   const navLink = useMemo(
     () =>
       cx(
-        "rounded-md px-3 py-2 text-sm font-medium text-white hover:text-yellow-300",
-        "focus:outline-none focus:ring-2 focus:ring-[#FFCC00]",
-        "bg-[linear-gradient(90deg,#EB5B00,#FFCC00)] [background-size:0%_2px] [background-repeat:no-repeat] [background-position:left_100%] hover:[background-size:100%_2px] transition-[background-size]"
+        'rounded-md px-3 py-2 text-sm font-medium text-white hover:text-yellow-300',
+        'focus:outline-none focus:ring-2 focus:ring-[#FFCC00]',
+        'bg-[linear-gradient(90deg,#EB5B00,#FFCC00)] [background-size:0%_2px] [background-repeat:no-repeat] [background-position:left_100%] hover:[background-size:100%_2px] transition-[background-size]'
       ),
     []
   );
@@ -213,37 +205,37 @@ export default function Navbar() {
   // Announce opening to close other panels (like LanguageSwitcher)
   const announceOpen = (section) =>
     window.dispatchEvent(
-      new CustomEvent("nav:open-section", { detail: section })
+      new CustomEvent('nav:open-section', {detail: section})
     );
 
   const onHover = (section) => (e) => {
-    if (e.pointerType === "mouse") {
+    if (e.pointerType === 'mouse') {
       setOpenSection(section);
       announceOpen(section);
     }
   };
 
   const onButtonKeyDown = (section) => (e) => {
-    if (e.key === "Enter" || e.key === " ") {
+    if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       const next = openSection === section ? null : section;
       setOpenSection(next);
       if (next) announceOpen(section);
-    } else if (e.key === "ArrowDown") {
+    } else if (e.key === 'ArrowDown') {
       setOpenSection(section);
       announceOpen(section);
-    } else if (e.key === "Escape") {
+    } else if (e.key === 'Escape') {
       setOpenSection(null);
       e.currentTarget.blur();
     }
   };
 
   /* ------------------------------ small subparts ----------------------------- */
-  const NavButton = ({ label, section, controlsId, buttonRef }) => (
+  const NavButton = ({label, section, controlsId, buttonRef}) => (
     <button
       ref={buttonRef}
       type="button"
-      className={cx(navLink, "flex items-center")}
+      className={cx(navLink, 'flex items-center')}
       aria-haspopup="menu"
       aria-expanded={openSection === section}
       aria-controls={controlsId}
@@ -263,12 +255,12 @@ export default function Navbar() {
     <div
       id={ids.servicesPanel}
       role="menu"
-      aria-label={tNav("services")}
+      aria-label={tNav('services')}
       className="overflow-hidden"
     >
       <div className="px-5 py-4">
         <div className="grid md:grid-cols-2 gap-4">
-          {servicesStructure.map(({ groupKey, items }) => (
+          {servicesStructure.map(({groupKey, items}) => (
             <div
               key={groupKey}
               className="rounded-lg bg-gray-50 p-3 border border-black/10"
@@ -280,10 +272,14 @@ export default function Navbar() {
                 {items.map((key) => (
                   <li key={key}>
                     <Link
-                      href={`${root}/services/${key}`}
+                      href={`/services/${key}`}
                       role="menuitem"
                       className="block rounded-md p-2 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFCC00]"
                       onClick={() => setOpenSection(null)}
+                      prefetch
+                      onPointerEnter={() =>
+                        router.prefetch(`/${locale}/services/${key}`)
+                      }
                     >
                       <p className="text-sm font-medium text-gray-900">
                         {tServices(`items.${key}.label`)}
@@ -306,7 +302,7 @@ export default function Navbar() {
     <div
       id={ids.galleryPanel}
       role="menu"
-      aria-label={tNav("gallery")}
+      aria-label={tNav('gallery')}
       className="overflow-hidden"
     >
       <div className="px-5 py-4">
@@ -314,10 +310,14 @@ export default function Navbar() {
           {galleryKeys.map((gKey) => (
             <Link
               key={gKey}
-              href={`${root}/gallery/${gKey}`}
+              href={`/gallery/${gKey}`}
               role="menuitem"
               className="rounded-lg bg-gray-50 p-3 border border-black/10 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFCC00]"
               onClick={() => setOpenSection(null)}
+              prefetch
+              onPointerEnter={() =>
+                router.prefetch(`/${locale}/gallery/${gKey}`)
+              }
             >
               <p className="text-sm font-medium text-gray-900">
                 {tGallery(`items.${gKey}.label`)}
@@ -337,11 +337,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between h-14">
         {/* Logo */}
         <div className="flex items-center">
-          <Link
-            href={root}
-            aria-label="Go to homepage"
-            className="flex items-center"
-          >
+          <Link href="/" aria-label="Go to homepage" className="flex items-center" prefetch>
             <Image
               src="/logos/logo.svg"
               alt="Brand logo"
@@ -359,16 +355,18 @@ export default function Navbar() {
             <li role="none">
               <Link
                 role="menuitem"
-                href={root}
-                className={cx(navLink, isActive(root) && "text-black")}
+                href="/"
+                className={cx(navLink, isActive('/') && 'text-black')}
+                prefetch
+                onPointerEnter={() => router.prefetch(`/${locale}`)}
               >
-                {tNav("home")}
+                {tNav('home')}
               </Link>
             </li>
 
             <li role="none">
               <NavButton
-                label={tNav("services")}
+                label={tNav('services')}
                 section="services"
                 controlsId={ids.servicesPanel}
                 buttonRef={servicesBtnRef}
@@ -377,7 +375,7 @@ export default function Navbar() {
 
             <li role="none">
               <NavButton
-                label={tNav("gallery")}
+                label={tNav('gallery')}
                 section="gallery"
                 controlsId={ids.galleryPanel}
                 buttonRef={galleryBtnRef}
@@ -387,25 +385,23 @@ export default function Navbar() {
             <li role="none">
               <Link
                 role="menuitem"
-                href={`${root}/contact`}
-                className={cx(
-                  navLink,
-                  isActive(`${root}/contact`) && "text-white"
-                )}
+                href="/contact"
+                className={cx(navLink, isActive('/contact') && 'text-white')}
+                prefetch
+                onPointerEnter={() => router.prefetch(`/${locale}/contact`)}
               >
-                {tNav("contact")}
+                {tNav('contact')}
               </Link>
             </li>
             <li role="none">
               <Link
                 role="menuitem"
-                href={`${root}/about`}
-                className={cx(
-                  navLink,
-                  isActive(`${root}/about`) && "text-white"
-                )}
+                href="/about"
+                className={cx(navLink, isActive('/about') && 'text-white')}
+                prefetch
+                onPointerEnter={() => router.prefetch(`/${locale}/about`)}
               >
-                {tNav("about")}
+                {tNav('about')}
               </Link>
             </li>
           </ul>
@@ -427,19 +423,8 @@ export default function Navbar() {
               setMobileGalleryOpen(false);
             }}
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path
-                d="M4 6h16M4 12h16M4 18h16"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
         </div>
@@ -454,11 +439,12 @@ export default function Navbar() {
           <ul className="space-y-2">
             <li>
               <Link
-                href={root}
+                href="/"
                 className="block rounded-lg px-3 py-2 text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFCC00]"
                 onClick={() => setMobileOpen(false)}
+                prefetch
               >
-                {tNav("home")}
+                {tNav('home')}
               </Link>
             </li>
 
@@ -472,18 +458,17 @@ export default function Navbar() {
                 aria-controls={ids.mobileServices}
                 onClick={() => setMobileServicesOpen((v) => !v)}
               >
-                <span>{tNav("services")}</span>{" "}
-                <Chevron open={mobileServicesOpen} />
+                <span>{tNav('services')}</span> <Chevron open={mobileServicesOpen} />
               </button>
               <div
                 id={ids.mobileServices}
                 className={cx(
-                  "overflow-hidden transition-[max-height] duration-300",
-                  mobileServicesOpen ? maxH : "max-h-0"
+                  'overflow-hidden transition-[max-height] duration-300',
+                  mobileServicesOpen ? maxH : 'max-h-0'
                 )}
               >
                 <div className="ps-3">
-                  {servicesStructure.map(({ groupKey, items }) => (
+                  {servicesStructure.map(({groupKey, items}) => (
                     <div key={groupKey} className="my-2">
                       <p className="px-3 py-1 text-xs text-gray-600">
                         {tServices(`groups.${groupKey}.label`)}
@@ -492,9 +477,10 @@ export default function Navbar() {
                         {items.map((key) => (
                           <li key={key}>
                             <Link
-                              href={`${root}/services/${key}`}
+                              href={`/services/${key}`}
                               className="block rounded-md px-3 py-2 text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFCC00]"
                               onClick={() => setMobileOpen(false)}
+                              prefetch
                             >
                               {tServices(`items.${key}.label`)}
                             </Link>
@@ -517,14 +503,13 @@ export default function Navbar() {
                 aria-controls={ids.mobileGallery}
                 onClick={() => setMobileGalleryOpen((v) => !v)}
               >
-                <span>{tNav("gallery")}</span>{" "}
-                <Chevron open={mobileGalleryOpen} />
+                <span>{tNav('gallery')}</span> <Chevron open={mobileGalleryOpen} />
               </button>
               <div
                 id={ids.mobileGallery}
                 className={cx(
-                  "overflow-hidden transition-[max-height] duration-300",
-                  mobileGalleryOpen ? maxH : "max-h-0"
+                  'overflow-hidden transition-[max-height] duration-300',
+                  mobileGalleryOpen ? maxH : 'max-h-0'
                 )}
               >
                 <div className="ps-3">
@@ -532,9 +517,10 @@ export default function Navbar() {
                     {galleryKeys.map((gKey) => (
                       <li key={gKey}>
                         <Link
-                          href={`${root}/gallery/${gKey}`}
+                          href={`/gallery/${gKey}`}
                           className="block rounded-md px-3 py-2 text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFCC00]"
                           onClick={() => setMobileOpen(false)}
+                          prefetch
                         >
                           {tGallery(`items.${gKey}.label`)}
                         </Link>
@@ -547,20 +533,22 @@ export default function Navbar() {
 
             <li>
               <Link
-                href={`${root}/contact`}
+                href="/contact"
                 className="block rounded-lg px-3 py-2 text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFCC00]"
                 onClick={() => setMobileOpen(false)}
+                prefetch
               >
-                {tNav("contact")}
+                {tNav('contact')}
               </Link>
             </li>
             <li>
               <Link
-                href={`${root}/about`}
+                href="/about"
                 className="block rounded-lg px-3 py-2 text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFCC00]"
                 onClick={() => setMobileOpen(false)}
+                prefetch
               >
-                {tNav("about")}
+                {tNav('about')}
               </Link>
             </li>
 
@@ -578,10 +566,10 @@ export default function Navbar() {
     <header
       ref={headerRef}
       className={cx(
-        "border-b border-black/10 backdrop-blur-md fixed top-0 left-0 w-full z-50 text-white",
+        'border-b border-black/10 backdrop-blur-md fixed top-0 left-0 w-full z-50 text-white',
         scrolled
-          ? "bg-black/40 shadow-[inset_0_-1px_0_rgba(0,0,0,.06)]"
-          : "bg-black/20"
+          ? 'bg-black/40 shadow-[inset_0_-1px_0_rgba(0,0,0,.06)]'
+          : 'bg-black/20'
       )}
       style={{background: 'rgba(0,0,0,0.2)'}}
     >
@@ -590,7 +578,7 @@ export default function Navbar() {
       {/* Floating (overlay) panels for desktop */}
       <FloatingPanel
         anchorRef={servicesBtnRef}
-        open={openSection === "services"}
+        open={openSection === 'services'}
         onRequestClose={() => setOpenSection(null)}
         width={760}
       >
@@ -599,7 +587,7 @@ export default function Navbar() {
 
       <FloatingPanel
         anchorRef={galleryBtnRef}
-        open={openSection === "gallery"}
+        open={openSection === 'gallery'}
         onRequestClose={() => setOpenSection(null)}
         width={760}
       >
@@ -609,8 +597,8 @@ export default function Navbar() {
       {/* Mobile stacked menu in normal flow */}
       <div
         className={cx(
-          "md:hidden transition-[max-height] duration-300 overflow-hidden",
-          mobileOpen ? maxH : "max-h-0"
+          'md:hidden transition-[max-height] duration-300 overflow-hidden',
+          mobileOpen ? maxH : 'max-h-0'
         )}
       >
         <MobileStack />

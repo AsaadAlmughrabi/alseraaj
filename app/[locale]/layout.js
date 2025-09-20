@@ -1,7 +1,7 @@
 import "../globals.css";
-import {NextIntlClientProvider} from "next-intl";
-import {notFound} from "next/navigation";
-import {routing} from "@/i18n/routing";
+import { NextIntlClientProvider } from "next-intl";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
@@ -15,8 +15,8 @@ async function getMessages(locale) {
 }
 
 export default async function RootLayout(props) {
-  const {children, params} = props;
-  const {locale} = await params; / Next 15: await params/
+  const { children, params } = props;
+  const { locale } = await params;
 
   if (!routing.locales.includes(locale)) notFound();
   const messages = await getMessages(locale);
@@ -26,9 +26,7 @@ export default async function RootLayout(props) {
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Navbar />
-          <HeroSection />
           {children}
-          {/* <Footer /> */}
         </NextIntlClientProvider>
       </body>
     </html>

@@ -1,0 +1,252 @@
+:root {
+    --brand-900: #640D5F;
+    --brand-700: #B12C00;
+    --brand-600: #EB5B00;
+    --brand-400: #FFCC00;
+    --surface: #fff;
+    --border: #e5e7eb;
+    --text-900: #111827;
+    --text-700: #374151;
+    --text-500: #5d6775;
+    --radius: 12px;
+    --radius-sm: 12px;
+    --shadow: 0 6px 18px rgba(17, 24, 39, .06);
+    --gap: 100px;
+}
+
+.page {
+    padding-top: 80px;  
+    min-height: 100vh;
+    box-sizing: border-box; /* Include padding in height calculation */
+}
+
+.header {
+    max-width: 1120px;
+    margin: 0 auto 72px auto;
+}
+
+.title {
+    font-size: 64px;
+    line-height: 1.1;
+    margin: 0 0 12px 0;
+    color: #271211;
+    font-weight: 700;
+}
+
+.subtitle {
+    color: var(--text-500);
+    max-width: 760px;
+    font-size: 18px;
+}
+
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 1120px;
+    margin: 0 auto 72px auto;
+}
+
+@media (min-width:960px) {
+    .grid {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: var(--gap);
+    }
+
+    .card {
+        flex: 1 1 0;
+    }
+
+    .sidebar {
+        flex: 0 0 440px;
+        max-width: 440px;
+    }
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+}
+
+.cardTitle {
+    font-size: 22px;
+    margin: 0 0 40px 0;
+    color: var(--text-900);
+    font-weight: 800;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.fieldRow {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+@media (min-width:720px) {
+    .fieldRow {
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 16px;
+    color: var(--text-700);
+    font-weight: 600;
+}
+
+.input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-size: 16px;
+    line-height: 1.4;
+    min-height: 56px;
+    outline: none;
+    background: #fff;
+    transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.input::placeholder {
+    color: #9aa3af;
+    font-size: 15px;
+}
+
+.input:focus {
+    border-color: var(--brand-900);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand-900) 22%, transparent);
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 200px;
+    padding: 16px 18px;
+}
+
+.button {
+    margin-top: 6px;
+    border: 0;
+    border-radius: 14px;
+    padding: 18px 22px;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(180deg, var(--brand-900), #4d0a49);
+    transition: filter .15s ease, transform .02s ease;
+}
+
+.button:hover {
+    filter: brightness(.98);
+}
+
+.button:active {
+    transform: translateY(1px);
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sideTitle {
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 20px;
+    color: #374151;
+}
+
+.contactList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: var(--text-700);
+    font-size: 16px;
+}
+
+.contactIcon {
+    margin-right: 8px;
+}
+
+.mapShell {
+    position: relative;
+    height: clamp(320px, 48vh, 560px);
+    background: #f3f4f6;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.mapInner {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.mapCard {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    max-width: min(460px, calc(100% - 32px));
+    box-shadow: var(--shadow);
+    z-index: 2000;
+    pointer-events: auto;
+}
+
+.mapTitle {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 800;
+    color: var(--text-900);
+    font-size: 18px;
+}
+
+.mapAddr {
+    margin: 0 0 10px 0;
+    color: var(--text-700);
+    font-size: 15px;
+}
+
+.mapBtn {
+    display: inline-block;
+    text-decoration: none;
+    background: var(--brand-600);
+    color: #111827;
+    font-weight: 800;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 15px;
+}
+
+@media (max-width:400px) {
+    .title {
+        font-size: 40px;
+    }
+
+    .card,
+    .sidebar {
+        padding: 18px;
+    }
+}
